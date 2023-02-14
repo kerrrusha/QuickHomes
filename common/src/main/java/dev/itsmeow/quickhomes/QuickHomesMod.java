@@ -34,6 +34,7 @@ public class QuickHomesMod {
             ServerPlayer player = command.getSource().getPlayerOrException();
             Pair<Vec3, ResourceKey<Level>> home = ((IStoreHome) player).getHome();
             if(home.getLeft() != null && home.getRight() != null) {
+                ((IStoreHome) player).setBack(new Vec3(player.getX(), player.getY(), player.getZ()), player.getLevel().dimension());
                 player.teleportTo(player.getServer().getLevel(home.getRight()), home.getLeft().x, home.getLeft().y, home.getLeft().z, player.getYRot(), player.getXRot());
                 return 1;
             } else {
@@ -47,11 +48,23 @@ public class QuickHomesMod {
             player.sendSystemMessage(Component.literal("Home set."));
             return 1;
         }));
+        dispatcher.register(Commands.literal("back").requires(isPlayer).executes(command -> {
+            ServerPlayer player = command.getSource().getPlayerOrException();
+            Pair<Vec3, ResourceKey<Level>> back = ((IStoreHome) player).getBack();
+            if(back.getLeft() != null && back.getRight() != null) {
+                ((IStoreHome) player).setBack(new Vec3(player.getX(), player.getY(), player.getZ()), player.getLevel().dimension());
+                player.teleportTo(player.getServer().getLevel(back.getRight()), back.getLeft().x, back.getLeft().y, back.getLeft().z, player.getYRot(), player.getXRot());
+                return 1;
+            } else {
+                player.sendSystemMessage(Component.literal("No back set."));
+            }
+            return 0;
+        }));
     }
 
     public static void onPlayerJoin(Player player) {
         if(!player.level.isClientSide() && isJoinMessageEnabled()) {
-            player.sendSystemMessage(Component.literal("This server is running QuickHomes " + getModVersion() + " by itsmeowdev!"));
+            player.sendSystemMessage(Component.literal("This server is running BetterQuickHomes " + getModVersion() + " by kerrrusha!"));
             player.sendSystemMessage(Component.literal("You can use /sethome and /home with this mod installed."));
         }
     }

@@ -9,6 +9,10 @@ public interface IStoreHome {
 
     void setHome(Vec3 pos, ResourceKey<Level> dimension);
 
+    void setBack(Vec3 pos, ResourceKey<Level> dimension);
+
     Pair<Vec3, ResourceKey<Level>> getHome();
+
+    Pair<Vec3, ResourceKey<Level>> getBack();
 
 }

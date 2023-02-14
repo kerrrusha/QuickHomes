@@ -24,6 +24,11 @@ public class ServerPlayerMixin implements IStoreHome {
     @Unique
     public ResourceKey<Level> quickhomes_dimension = null;
 
+    @Unique
+    public Vec3 quickhomes_backPos = null;
+    @Unique
+    public ResourceKey<Level> quickhomes_backDimension = null;
+
     @Inject(at = @At("RETURN"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
     public void readAdditionalSaveData(CompoundTag tag, CallbackInfo c) {
         CompoundTag data = null;
@@ -64,7 +69,18 @@ public class ServerPlayerMixin implements IStoreHome {
     }
 
     @Override
+    public void setBack(Vec3 pos, ResourceKey<Level> dimension) {
+        quickhomes_backPos = pos;
+        quickhomes_backDimension = dimension;
+    }
+
+    @Override
     public Pair<Vec3, ResourceKey<Level>> getHome() {
         return Pair.of(quickhomes_homePos, quickhomes_dimension);
+    }
+
+    @Override
+    public Pair<Vec3, ResourceKey<Level>> getBack() {
+        return Pair.of(quickhomes_backPos, quickhomes_backDimension);
     }
 }
